@@ -237,9 +237,9 @@ class DealNoDeal(object):
                 print('~' * 45, end='\n\n')
 
                 # Prompt player whether to accept the banker's offer or continue playing 
-                while not response == 'y' or response == 'n':
-                    response = input('Accept banker\'s offer (y/n)? ').lower()
-                    if response == 'y':
+                while not response == 'deal' or response == 'no deal':
+                    response = input('Deal or No Deal? ').lower()
+                    if response == 'deal':
                         print(end='\n\n')
                         print('#' * 45, end='\n\n')
                         print(('Game Results: ').upper(), end='\n\n')
