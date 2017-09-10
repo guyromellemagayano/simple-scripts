@@ -1,4 +1,4 @@
-import sys, random
+import random
 
 question = input('Ask the magic 8 ball a question (Press enter to start): ')
 answers = [
