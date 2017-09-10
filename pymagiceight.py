@@ -1,5 +1,4 @@
-import sys
-import random
+import sys, random
 
 question = input('Ask the magic 8 ball a question (Press enter to start): ')
 answers = [
@@ -14,4 +13,4 @@ answers = [
 	"You're awesome",
 	"You're important to other people"
 ]
-print(answers[random.randint(1, len(answers))])
+print(answers[random.randint(1, len(answers))])	
