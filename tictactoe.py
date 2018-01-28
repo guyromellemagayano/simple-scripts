@@ -6,23 +6,30 @@ A classic Python game of X's and O's.
 
 import random
 
-# Function that will draw the game's board 
+# Function that will draw the game's board
+
+
 def makeBoard(board):
-    print(end = '\n')
+    print(end='\n')
     print('        |        |        ')
-    print('    ' + board[7] + '  ' + ' | ' + '   ' + board[8] + '  ' + ' | ' + '   ' + board[9] + '  ')
-    print('        |        |        ')
-    print('--------------------------')
-    print('        |        |        ')
-    print('    ' + board[4] + '  ' + ' | ' + '   ' + board[5] + '  ' + ' | ' + '   ' + board[6] + '  ')
+    print('    ' + board[7] + '  ' + ' | ' + '   ' +
+          board[8] + '  ' + ' | ' + '   ' + board[9] + '  ')
     print('        |        |        ')
     print('--------------------------')
     print('        |        |        ')
-    print('    ' + board[1] + '  ' + ' | ' + '   ' + board[2] + '  ' + ' | ' + '   ' + board[3] + '  ')
+    print('    ' + board[4] + '  ' + ' | ' + '   ' +
+          board[5] + '  ' + ' | ' + '   ' + board[6] + '  ')
     print('        |        |        ')
-    print(end = '\n')
+    print('--------------------------')
+    print('        |        |        ')
+    print('    ' + board[1] + '  ' + ' | ' + '   ' +
+          board[2] + '  ' + ' | ' + '   ' + board[3] + '  ')
+    print('        |        |        ')
+    print(end='\n')
 
 # Function that prompts user to choose between "X" or "O"
+
+
 def promptPlayerLetter():
     letter = ''
     while not (letter == 'X' or letter == 'O'):
@@ -30,25 +37,33 @@ def promptPlayerLetter():
     # The first element in the list returned is the player's letter while the other one is for the computer
     if letter == 'X':
         return ['X', 'O']
-    else: 
+    else:
         return ['O', 'X']
 
 # Function that determines who will make the first move
+
+
 def makeFirstMove():
     if random.randint(0, 1) == 0:
         return 'Computer'
-    else: 
+    else:
         return 'Player'
 
 # Function that prompts player(user) to play again. Return True if yes, otherwise False
+
+
 def replayGame():
     return input('Do you want to play again (y/n): ').lower().startswith('y')
 
 # Function that simulates the game by generating the game board, process the letter chosen by the user, and the move to be made by either the player(user) or the computer
+
+
 def makeMove(board, letter, move):
     board[move] = letter
 
 # Function that determines whether the player(user) has won the game
+
+
 def winGame(board, letter):
     # 1. Across the top
     # 2. Across the middled
@@ -61,6 +76,8 @@ def winGame(board, letter):
     return ((board[7] == letter and board[8] == letter and board[9] == letter) or (board[4] == letter and board[5] == letter and board[6] == letter) or (board[1] == letter and board[2] == letter and board[3] == letter) or (board[7] == letter and board[4] == letter and board[1] == letter) or (board[8] == letter and board[5] == letter and board[2] == letter) or (board[9] == letter and board[6] == letter and board[3] == letter) or (board[7] == letter and board[5] == letter and board[3] == letter) or (board[9] == letter and board[5] == letter and board[1] == letter))
 
 # Function that duplicates the board after either the player(user) or the computer's turn
+
+
 def copyBoard(board):
     duplicateBoard = []
 
@@ -69,10 +86,14 @@ def copyBoard(board):
     return duplicateBoard
 
 # Function that determines if the game board still has free blocks for any moves
+
+
 def freeSpace(board, move):
     return board[move] == ' '
 
-# Function that prompts the player(user) to make a move and that move is simulated 
+# Function that prompts the player(user) to make a move and that move is simulated
+
+
 def playerMove(board):
     move = ' '
     while move not in '1 2 3 4 5 6 7 8 9'.split() or not freeSpace(board, int(move)):
@@ -80,6 +101,8 @@ def playerMove(board):
     return int(move)
 
 # Function that returns a valid move from the passed list on the game board or returns None if there is no more valid moves
+
+
 def pickRandomMoveFromList(board, movesList):
     possibleMoves = []
 
@@ -88,10 +111,12 @@ def pickRandomMoveFromList(board, movesList):
             possibleMoves.append(i)
     if len(possibleMoves) != 0:
         return random.choice(possibleMoves)
-    else: 
+    else:
         return None
 
 # Function that automates the computer's move in the game board
+
+
 def computerMove(board, compLetter):
     if compLetter == 'X':
         playerLetter == 'O'
@@ -117,14 +142,17 @@ def computerMove(board, compLetter):
         return 5
 
     # Make a move on one of the board's sides(2, 4, 6, 8)
-    return pickRandomMoveFromList(board, [2, 4, 6, 8]) 
+    return pickRandomMoveFromList(board, [2, 4, 6, 8])
 
 # Function that returns True if the space on the board has been taken. Otherwise return False
+
+
 def boardFull(board):
     for x in range(1, 10):
         if freeSpace(board, x):
             return False
     return True
+
 
 # Program Execution [Start Here]
 while True:
