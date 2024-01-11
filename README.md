@@ -1,2 +1,3 @@
-# simple-python-programs
-Just a bunch of simple Python programs
+# Simple Python Programs
+
+Just a bunch of simple Python programs just for fun.
