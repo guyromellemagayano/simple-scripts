@@ -1,7 +1,7 @@
 """
 Battleship Game
 
-The goal of the game is to guess the exact coordinates(x, y) of a battleship in the battlefield so you could sunk it. You only have 4 tries to guess the correct coordinates. 
+The goal of the game is to guess the exact coordinates(x, y) of a battleship in the battlefield so you could sunk it. You only have 4 tries to guess the correct coordinates.
 
 Conditions:
 1. The size dimensions of the entire battlefield is abour 5 x 5 units. The program will only register rows and columns starting from 0 to 4. Above the given range will generate an error exception
@@ -20,7 +20,7 @@ def print_board(board):
     for row in board:
         print(" ".join(row))
 
-print("Let's play Battleship!")
+print("\nLet's play Battleship!\n")
 print_board(board)
 
 def random_row(board):
@@ -35,8 +35,8 @@ ship_col = random_col(board)
 # Simulate a pre-defined number of tries before ending the game
 turn=[]
 for turn in range(4):
-    guess_row = int(input("Guess Row:"))
-    guess_col = int(input("Guess Col:"))
+    guess_row = int(input("\nGuess Row: "))
+    guess_col = int(input("\nGuess Col: "))
 
     if guess_row == ship_row and guess_col == ship_col:
         print("Congratulations! You sunk my battleship!")
@@ -56,4 +56,3 @@ for turn in range(4):
 
         print_board(board)
 
-    
