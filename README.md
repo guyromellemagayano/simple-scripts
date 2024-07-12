@@ -1,3 +1,3 @@
-# Simple Python Programs
+# Simple Backend Scripts
 
-Just a bunch of simple Python programs just for fun.
+Just a bunch of simple backend scripts just for fun.
