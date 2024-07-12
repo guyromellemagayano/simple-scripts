@@ -16,6 +16,8 @@ Welcome to the Battleship Game! The goal of the game is to guess the exact coord
     python main.py
     ```
 
+    > Or use the `make run-battleship-game` command in the root folder to run this program without navigating through the code.
+
 2. Follow the prompts to input your guesses for the row and column.
 
 ## Possible Moves and Errors
@@ -35,69 +37,3 @@ If you guess the correct coordinates where the battleship is located, you will s
 ### Missing the Battleship
 
 If you guess the coordinates that do not match the battleship's location, you will see the message: "You missed my battleship!" and your guess will be marked on the board with an "X".
-
-## Example Gameplay
-
-```sh
-Let's play Battleship!
-
-O O O O O
-O O O O O
-O O O O O
-O O O O O
-O O O O O
-
-Guess Row (0-4): 2
-Guess Col (0-4): 3
-
-You missed my battleship!
-
-Turn 1
-O O O O O
-O O O O O
-O O O X O
-O O O O O
-O O O O O
-
-Guess Row (0-4): 1
-Guess Col (0-4): 2
-
-You missed my battleship!
-
-Turn 2
-O O O O O
-O O X O O
-O O O X O
-O O O O O
-O O O O O
-
-Guess Row (0-4): 2
-Guess Col (0-4): 3
-
-You guessed that one already.
-
-O O O O O
-O O X O O
-O O O X O
-O O O O O
-O O O O O
-
-Guess Row (0-4): 0
-Guess Col (0-4): 1
-
-You missed my battleship!
-
-Turn 3
-O X O O O
-O O X O O
-O O O X O
-O O O O O
-O O O O O
-
-Guess Row (0-4): 4
-Guess Col (0-4): 4
-
-You missed my battleship!
-
-Game Over. Exiting...
-```
