@@ -1,58 +1,48 @@
-"""
-Battleship Game
+from battleship import (
+    initialize_board, print_board, random_row, random_col, check_guess, mark_board,
+    MAX_TURNS
+)
 
-The goal of the game is to guess the exact coordinates(x, y) of a battleship in the battlefield so you could sunk it. You only have 4 tries to guess the correct coordinates.
 
-Conditions:
-1. The size dimensions of the entire battlefield is abour 5 x 5 units. The program will only register rows and columns starting from 0 to 4. Above the given range will generate an error exception
-2. Inputting the same coordinates(rows x columns) twice will generate an error exception
-3. When you get the exact coordinates, the entire program terminates
-"""
+def main():
+    print("\nBattleship Game\n")
+    print("Welcome to the Battleship Game! The goal of the game is to guess the exact coordinates (x, y) of a battleship in the battlefield so you can sink it. You have 4 tries to guess the correct coordinates.\n")
+    print("Conditions\n")
+    print("1. The battlefield is a 5x5 grid. Rows and columns are indexed from 0 to 4. Inputting coordinates outside this range will generate an error.")
+    print("2. Inputting the same coordinates (rows x columns) twice will generate an error.")
+    print("3. If you guess the correct coordinates, the game terminates immediately.\n")
+    print("Let's play Battleship!\n")
 
-from random import randint
+    board = initialize_board()
+    ship_row = random_row(board)
+    ship_col = random_col(board)
 
-board = []
+    print_board(board)
 
-for x in range(5):
-    board.append(["O"] * 5)
+    for turn in range(MAX_TURNS):
+        try:
+            print(f"\nTurn {turn + 1}")
+            guess_row = int(input("Guess Row (0-4): "))
+            guess_col = int(input("Guess Col (0-4): "))
+        except ValueError:
+            print("\nPlease enter valid integers.")
+            continue
 
-def print_board(board):
-    for row in board:
-        print(" ".join(row))
-
-print("\nLet's play Battleship!\n")
-print_board(board)
-
-def random_row(board):
-    return randint(0, len(board) - 1)
-
-def random_col(board):
-    return randint(0, len(board[0]) - 1)
-
-ship_row = random_row(board)
-ship_col = random_col(board)
-
-# Simulate a pre-defined number of tries before ending the game
-turn=[]
-for turn in range(4):
-    guess_row = int(input("\nGuess Row: "))
-    guess_col = int(input("\nGuess Col: "))
-
-    if guess_row == ship_row and guess_col == ship_col:
-        print("Congratulations! You sunk my battleship!")
-        break
-    else:
-        if (guess_row < 0 or guess_row > 4) or (guess_col < 0 or guess_col > 4):
-            print("Oops, that's not even in the ocean.")
-        elif(board[guess_row][guess_col] == "X"):
-            print("You guessed that one already.")
+        result = check_guess(guess_row, guess_col, ship_row, ship_col, board)
+        if result == "hit":
+            print("\nCongratulations! You sunk my battleship!\n")
+            break
+        elif result == "out_of_bounds":
+            print("\nOops, that's not even in the ocean.\n")
+        elif result == "already_guessed":
+            print("\nYou guessed that one already.")
         else:
-            print("You missed my battleship!")
-            board[guess_row][guess_col] = "X"
-            # Print (turn + 1) here!
-            print(turn+1)
-            if turn == 3:
-                print("Game Over")
+            print("\nYou missed my battleship!\n")
+            mark_board(board, guess_row, guess_col)                
+            print_board(board)
+    else:
+        print("\nGame Over.\n")
 
-        print_board(board)
 
+if __name__ == "__main__":
+    main()
