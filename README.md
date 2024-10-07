@@ -1,3 +1,3 @@
-# Simple Backend Scripts
+# Simple Scripts
 
-Just a bunch of simple backend scripts just for fun.
+Just a bunch of simple scripts just for fun.
