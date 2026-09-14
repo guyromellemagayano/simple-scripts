@@ -1,0 +1,925 @@
+{
+  "cases": [
+    {
+      "name": "reserve and acknowledge",
+      "suite": "examples",
+      "config": {
+        "visibility_ms": 100,
+        "max_attempts": 3
+      },
+      "operations": [
+        {
+          "op": "enqueue",
+          "args": [
+            "email"
+          ],
+          "expect": "job-1"
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-1",
+            "payload": "email",
+            "attempt": 1,
+            "receipt": "lease-1"
+          }
+        },
+        {
+          "op": "ack",
+          "args": [
+            "lease-1"
+          ],
+          "expect": true
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": null
+        },
+        {
+          "op": "dead_letters",
+          "args": [],
+          "expect": []
+        }
+      ]
+    },
+    {
+      "name": "FIFO and immediate retry",
+      "suite": "assessment",
+      "config": {
+        "visibility_ms": 100,
+        "max_attempts": 3
+      },
+      "operations": [
+        {
+          "op": "enqueue",
+          "args": [
+            "a"
+          ],
+          "expect": "job-1"
+        },
+        {
+          "op": "enqueue",
+          "args": [
+            "b"
+          ],
+          "expect": "job-2"
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-1",
+            "payload": "a",
+            "attempt": 1,
+            "receipt": "lease-1"
+          }
+        },
+        {
+          "op": "nack",
+          "args": [
+            "lease-1"
+          ],
+          "expect": true
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-2",
+            "payload": "b",
+            "attempt": 1,
+            "receipt": "lease-2"
+          }
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-1",
+            "payload": "a",
+            "attempt": 2,
+            "receipt": "lease-3"
+          }
+        },
+        {
+          "op": "ack",
+          "args": [
+            "lease-1"
+          ],
+          "expect": false
+        }
+      ]
+    },
+    {
+      "name": "visibility boundary and stale receipts",
+      "suite": "assessment",
+      "config": {
+        "visibility_ms": 10,
+        "max_attempts": 3
+      },
+      "operations": [
+        {
+          "op": "enqueue",
+          "args": [
+            "a"
+          ],
+          "expect": "job-1"
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-1",
+            "payload": "a",
+            "attempt": 1,
+            "receipt": "lease-1"
+          }
+        },
+        {
+          "op": "advance",
+          "args": [
+            9
+          ],
+          "expect": null
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": null
+        },
+        {
+          "op": "advance",
+          "args": [
+            1
+          ],
+          "expect": null
+        },
+        {
+          "op": "ack",
+          "args": [
+            "lease-1"
+          ],
+          "expect": false
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-1",
+            "payload": "a",
+            "attempt": 2,
+            "receipt": "lease-2"
+          }
+        },
+        {
+          "op": "nack",
+          "args": [
+            "lease-1"
+          ],
+          "expect": false
+        },
+        {
+          "op": "ack",
+          "args": [
+            "lease-2"
+          ],
+          "expect": true
+        },
+        {
+          "op": "ack",
+          "args": [
+            "lease-2"
+          ],
+          "expect": false
+        },
+        {
+          "op": "advance",
+          "args": [
+            20
+          ],
+          "expect": null
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": null
+        }
+      ]
+    },
+    {
+      "name": "retry exhaustion",
+      "suite": "assessment",
+      "config": {
+        "visibility_ms": 10,
+        "max_attempts": 2
+      },
+      "operations": [
+        {
+          "op": "enqueue",
+          "args": [
+            "a"
+          ],
+          "expect": "job-1"
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-1",
+            "payload": "a",
+            "attempt": 1,
+            "receipt": "lease-1"
+          }
+        },
+        {
+          "op": "nack",
+          "args": [
+            "lease-1"
+          ],
+          "expect": true
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-1",
+            "payload": "a",
+            "attempt": 2,
+            "receipt": "lease-2"
+          }
+        },
+        {
+          "op": "nack",
+          "args": [
+            "lease-2"
+          ],
+          "expect": true
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": null
+        },
+        {
+          "op": "dead_letters",
+          "args": [],
+          "expect": [
+            {
+              "job_id": "job-1",
+              "payload": "a",
+              "attempts": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "expiry can dead-letter without reserve",
+      "suite": "assessment",
+      "config": {
+        "visibility_ms": 10,
+        "max_attempts": 1
+      },
+      "operations": [
+        {
+          "op": "enqueue",
+          "args": [
+            "a"
+          ],
+          "expect": "job-1"
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-1",
+            "payload": "a",
+            "attempt": 1,
+            "receipt": "lease-1"
+          }
+        },
+        {
+          "op": "advance",
+          "args": [
+            10
+          ],
+          "expect": null
+        },
+        {
+          "op": "dead_letters",
+          "args": [],
+          "expect": [
+            {
+              "job_id": "job-1",
+              "payload": "a",
+              "attempts": 1
+            }
+          ]
+        },
+        {
+          "op": "nack",
+          "args": [
+            "lease-1"
+          ],
+          "expect": false
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": null
+        }
+      ]
+    },
+    {
+      "name": "expired retries join behind ready work",
+      "suite": "assessment",
+      "config": {
+        "visibility_ms": 10,
+        "max_attempts": 2
+      },
+      "operations": [
+        {
+          "op": "enqueue",
+          "args": [
+            "a"
+          ],
+          "expect": "job-1"
+        },
+        {
+          "op": "enqueue",
+          "args": [
+            "b"
+          ],
+          "expect": "job-2"
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-1",
+            "payload": "a",
+            "attempt": 1,
+            "receipt": "lease-1"
+          }
+        },
+        {
+          "op": "advance",
+          "args": [
+            10
+          ],
+          "expect": null
+        },
+        {
+          "op": "enqueue",
+          "args": [
+            "c"
+          ],
+          "expect": "job-3"
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-2",
+            "payload": "b",
+            "attempt": 1,
+            "receipt": "lease-2"
+          }
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-1",
+            "payload": "a",
+            "attempt": 2,
+            "receipt": "lease-3"
+          }
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-3",
+            "payload": "c",
+            "attempt": 1,
+            "receipt": "lease-4"
+          }
+        }
+      ]
+    },
+    {
+      "name": "equal deadlines use numeric lease order",
+      "suite": "assessment",
+      "config": {
+        "visibility_ms": 10,
+        "max_attempts": 2
+      },
+      "operations": [
+        {
+          "op": "enqueue",
+          "args": [
+            "a"
+          ],
+          "expect": "job-1"
+        },
+        {
+          "op": "enqueue",
+          "args": [
+            "b"
+          ],
+          "expect": "job-2"
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-1",
+            "payload": "a",
+            "attempt": 1,
+            "receipt": "lease-1"
+          }
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-2",
+            "payload": "b",
+            "attempt": 1,
+            "receipt": "lease-2"
+          }
+        },
+        {
+          "op": "advance",
+          "args": [
+            10
+          ],
+          "expect": null
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-1",
+            "payload": "a",
+            "attempt": 2,
+            "receipt": "lease-3"
+          }
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-2",
+            "payload": "b",
+            "attempt": 2,
+            "receipt": "lease-4"
+          }
+        }
+      ]
+    },
+    {
+      "name": "unknown receipts and empty payload",
+      "suite": "assessment",
+      "config": {
+        "visibility_ms": 10,
+        "max_attempts": 1
+      },
+      "operations": [
+        {
+          "op": "ack",
+          "args": [
+            "missing"
+          ],
+          "expect": false
+        },
+        {
+          "op": "nack",
+          "args": [
+            "missing"
+          ],
+          "expect": false
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": null
+        },
+        {
+          "op": "enqueue",
+          "args": [
+            ""
+          ],
+          "expect": "job-1"
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-1",
+            "payload": "",
+            "attempt": 1,
+            "receipt": "lease-1"
+          }
+        },
+        {
+          "op": "ack",
+          "args": [
+            "lease-1"
+          ],
+          "expect": true
+        },
+        {
+          "op": "dead_letters",
+          "args": [],
+          "expect": []
+        }
+      ]
+    },
+    {
+      "name": "lease 10 follows lease 9 at equal deadlines",
+      "suite": "assessment",
+      "config": {
+        "visibility_ms": 10,
+        "max_attempts": 1
+      },
+      "operations": [
+        {
+          "op": "enqueue",
+          "args": [
+            "1"
+          ],
+          "expect": "job-1"
+        },
+        {
+          "op": "enqueue",
+          "args": [
+            "2"
+          ],
+          "expect": "job-2"
+        },
+        {
+          "op": "enqueue",
+          "args": [
+            "3"
+          ],
+          "expect": "job-3"
+        },
+        {
+          "op": "enqueue",
+          "args": [
+            "4"
+          ],
+          "expect": "job-4"
+        },
+        {
+          "op": "enqueue",
+          "args": [
+            "5"
+          ],
+          "expect": "job-5"
+        },
+        {
+          "op": "enqueue",
+          "args": [
+            "6"
+          ],
+          "expect": "job-6"
+        },
+        {
+          "op": "enqueue",
+          "args": [
+            "7"
+          ],
+          "expect": "job-7"
+        },
+        {
+          "op": "enqueue",
+          "args": [
+            "8"
+          ],
+          "expect": "job-8"
+        },
+        {
+          "op": "enqueue",
+          "args": [
+            "9"
+          ],
+          "expect": "job-9"
+        },
+        {
+          "op": "enqueue",
+          "args": [
+            "10"
+          ],
+          "expect": "job-10"
+        },
+        {
+          "op": "enqueue",
+          "args": [
+            "11"
+          ],
+          "expect": "job-11"
+        },
+        {
+          "op": "enqueue",
+          "args": [
+            "12"
+          ],
+          "expect": "job-12"
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-1",
+            "payload": "1",
+            "attempt": 1,
+            "receipt": "lease-1"
+          }
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-2",
+            "payload": "2",
+            "attempt": 1,
+            "receipt": "lease-2"
+          }
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-3",
+            "payload": "3",
+            "attempt": 1,
+            "receipt": "lease-3"
+          }
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-4",
+            "payload": "4",
+            "attempt": 1,
+            "receipt": "lease-4"
+          }
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-5",
+            "payload": "5",
+            "attempt": 1,
+            "receipt": "lease-5"
+          }
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-6",
+            "payload": "6",
+            "attempt": 1,
+            "receipt": "lease-6"
+          }
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-7",
+            "payload": "7",
+            "attempt": 1,
+            "receipt": "lease-7"
+          }
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-8",
+            "payload": "8",
+            "attempt": 1,
+            "receipt": "lease-8"
+          }
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-9",
+            "payload": "9",
+            "attempt": 1,
+            "receipt": "lease-9"
+          }
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-10",
+            "payload": "10",
+            "attempt": 1,
+            "receipt": "lease-10"
+          }
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-11",
+            "payload": "11",
+            "attempt": 1,
+            "receipt": "lease-11"
+          }
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-12",
+            "payload": "12",
+            "attempt": 1,
+            "receipt": "lease-12"
+          }
+        },
+        {
+          "op": "advance",
+          "args": [
+            10
+          ],
+          "expect": null
+        },
+        {
+          "op": "dead_letters",
+          "args": [],
+          "expect": [
+            {
+              "job_id": "job-1",
+              "payload": "1",
+              "attempts": 1
+            },
+            {
+              "job_id": "job-2",
+              "payload": "2",
+              "attempts": 1
+            },
+            {
+              "job_id": "job-3",
+              "payload": "3",
+              "attempts": 1
+            },
+            {
+              "job_id": "job-4",
+              "payload": "4",
+              "attempts": 1
+            },
+            {
+              "job_id": "job-5",
+              "payload": "5",
+              "attempts": 1
+            },
+            {
+              "job_id": "job-6",
+              "payload": "6",
+              "attempts": 1
+            },
+            {
+              "job_id": "job-7",
+              "payload": "7",
+              "attempts": 1
+            },
+            {
+              "job_id": "job-8",
+              "payload": "8",
+              "attempts": 1
+            },
+            {
+              "job_id": "job-9",
+              "payload": "9",
+              "attempts": 1
+            },
+            {
+              "job_id": "job-10",
+              "payload": "10",
+              "attempts": 1
+            },
+            {
+              "job_id": "job-11",
+              "payload": "11",
+              "attempts": 1
+            },
+            {
+              "job_id": "job-12",
+              "payload": "12",
+              "attempts": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "expiry order follows leases rather than original job order",
+      "suite": "assessment",
+      "config": {
+        "visibility_ms": 10,
+        "max_attempts": 4
+      },
+      "operations": [
+        {
+          "op": "enqueue",
+          "args": [
+            "a"
+          ],
+          "expect": "job-1"
+        },
+        {
+          "op": "enqueue",
+          "args": [
+            "b"
+          ],
+          "expect": "job-2"
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-1",
+            "payload": "a",
+            "attempt": 1,
+            "receipt": "lease-1"
+          }
+        },
+        {
+          "op": "nack",
+          "args": [
+            "lease-1"
+          ],
+          "expect": true
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-2",
+            "payload": "b",
+            "attempt": 1,
+            "receipt": "lease-2"
+          }
+        },
+        {
+          "op": "advance",
+          "args": [
+            1
+          ],
+          "expect": null
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-1",
+            "payload": "a",
+            "attempt": 2,
+            "receipt": "lease-3"
+          }
+        },
+        {
+          "op": "advance",
+          "args": [
+            10
+          ],
+          "expect": null
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-2",
+            "payload": "b",
+            "attempt": 2,
+            "receipt": "lease-4"
+          }
+        },
+        {
+          "op": "reserve",
+          "args": [],
+          "expect": {
+            "job_id": "job-1",
+            "payload": "a",
+            "attempt": 3,
+            "receipt": "lease-5"
+          }
+        }
+      ]
+    }
+  ]
+}
