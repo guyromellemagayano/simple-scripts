@@ -1,4 +1,6 @@
+#!/usr/bin/env python3
 from deal_no_deal import DealNoDeal
+
 
 def main():
     while True:

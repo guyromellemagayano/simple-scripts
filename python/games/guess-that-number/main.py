@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Guess that Number [v1.0]
 
@@ -6,11 +7,12 @@ The Goal: Similar to the first project, this project also uses the random module
 
 import random
 
+
 def guessThatNumber():
 	while True:
 		try:
 			number = int(input("Enter your desired number (1-10): "))
-			generate_number = random.randrange(0, 10) 
+			generate_number = random.randrange(0, 10)
 		except ValueError:
 			print(number, 'is not a number, try again.')
 			continue

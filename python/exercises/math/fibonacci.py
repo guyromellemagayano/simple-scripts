@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 a, b = 0, 1
 
 while b < 1000:

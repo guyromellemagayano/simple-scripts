@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 List Less Than Ten
 
@@ -17,7 +18,7 @@ print("\n")
 print([x for x in numList])
 print("\n")
 
-# Condition 3 
+# Condition 3
 def countNumList(num):
 	for x in range(1, num+1):
 		print(x)

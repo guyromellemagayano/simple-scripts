@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Finding the Median [v1.0]
 
@@ -10,8 +11,8 @@ To find the median number:
 def median(list_num):
     a = sorted(list_num)
     b = len(a) / 2
-    
-    if len(a) % 2 == 0: 
+
+    if len(a) % 2 == 0:
         return (a[b] + a[b-1]) / 2.0
     else:
         return a[b]

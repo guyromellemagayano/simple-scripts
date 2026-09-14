@@ -1,4 +1,4 @@
-import time 
+#!/usr/bin/env python3
 import random
 
 # Initialization
@@ -17,7 +17,7 @@ while turns > 0:
 	for char in select_word:
 		if char in guesses:
 			print(char, end=" ")
-		else: 
+		else:
 			print("_", end=" ")
 			fail += 1
 
@@ -37,7 +37,7 @@ while turns > 0:
 
 		print("\n")
 
-		print("Wrong character. You only have %s turns left" % (turns))
+		print(f"Wrong character. You only have {turns} turns left")
 
 		if turns == 0:
 			print("\n")

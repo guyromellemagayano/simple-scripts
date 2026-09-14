@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 def palindrome(text):
 	reverse_text = text[::-1]
 	if text == reverse_text:
