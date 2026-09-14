@@ -1,0 +1,311 @@
+{
+  "cases": [
+    {
+      "name": "store, read, expire",
+      "suite": "examples",
+      "config": {},
+      "operations": [
+        {
+          "op": "put",
+          "args": [
+            "session",
+            "alice",
+            100
+          ],
+          "expect": null
+        },
+        {
+          "op": "get",
+          "args": [
+            "session"
+          ],
+          "expect": "alice"
+        },
+        {
+          "op": "advance",
+          "args": [
+            100
+          ],
+          "expect": null
+        },
+        {
+          "op": "get",
+          "args": [
+            "session"
+          ],
+          "expect": null
+        }
+      ]
+    },
+    {
+      "name": "expiration boundary",
+      "suite": "assessment",
+      "config": {},
+      "operations": [
+        {
+          "op": "put",
+          "args": [
+            "a",
+            "v",
+            10
+          ],
+          "expect": null
+        },
+        {
+          "op": "advance",
+          "args": [
+            9
+          ],
+          "expect": null
+        },
+        {
+          "op": "get",
+          "args": [
+            "a"
+          ],
+          "expect": "v"
+        },
+        {
+          "op": "advance",
+          "args": [
+            1
+          ],
+          "expect": null
+        },
+        {
+          "op": "get",
+          "args": [
+            "a"
+          ],
+          "expect": null
+        },
+        {
+          "op": "delete",
+          "args": [
+            "a"
+          ],
+          "expect": false
+        }
+      ]
+    },
+    {
+      "name": "overwrite resets expiry",
+      "suite": "assessment",
+      "config": {},
+      "operations": [
+        {
+          "op": "put",
+          "args": [
+            "a",
+            "old",
+            10
+          ],
+          "expect": null
+        },
+        {
+          "op": "advance",
+          "args": [
+            9
+          ],
+          "expect": null
+        },
+        {
+          "op": "put",
+          "args": [
+            "a",
+            "new",
+            20
+          ],
+          "expect": null
+        },
+        {
+          "op": "advance",
+          "args": [
+            1
+          ],
+          "expect": null
+        },
+        {
+          "op": "get",
+          "args": [
+            "a"
+          ],
+          "expect": "new"
+        },
+        {
+          "op": "advance",
+          "args": [
+            19
+          ],
+          "expect": null
+        },
+        {
+          "op": "get",
+          "args": [
+            "a"
+          ],
+          "expect": null
+        }
+      ]
+    },
+    {
+      "name": "delete and missing",
+      "suite": "assessment",
+      "config": {},
+      "operations": [
+        {
+          "op": "get",
+          "args": [
+            "missing"
+          ],
+          "expect": null
+        },
+        {
+          "op": "delete",
+          "args": [
+            "missing"
+          ],
+          "expect": false
+        },
+        {
+          "op": "put",
+          "args": [
+            "a",
+            "v",
+            50
+          ],
+          "expect": null
+        },
+        {
+          "op": "delete",
+          "args": [
+            "a"
+          ],
+          "expect": true
+        },
+        {
+          "op": "delete",
+          "args": [
+            "a"
+          ],
+          "expect": false
+        },
+        {
+          "op": "get",
+          "args": [
+            "a"
+          ],
+          "expect": null
+        }
+      ]
+    },
+    {
+      "name": "independent keys and empty strings",
+      "suite": "assessment",
+      "config": {},
+      "operations": [
+        {
+          "op": "put",
+          "args": [
+            "",
+            "",
+            5
+          ],
+          "expect": null
+        },
+        {
+          "op": "put",
+          "args": [
+            "__proto__",
+            "safe",
+            20
+          ],
+          "expect": null
+        },
+        {
+          "op": "get",
+          "args": [
+            ""
+          ],
+          "expect": ""
+        },
+        {
+          "op": "advance",
+          "args": [
+            5
+          ],
+          "expect": null
+        },
+        {
+          "op": "delete",
+          "args": [
+            ""
+          ],
+          "expect": false
+        },
+        {
+          "op": "get",
+          "args": [
+            "__proto__"
+          ],
+          "expect": "safe"
+        }
+      ]
+    },
+    {
+      "name": "large starting clock and resurrection",
+      "suite": "assessment",
+      "config": {
+        "start_ms": 1000000000
+      },
+      "operations": [
+        {
+          "op": "put",
+          "args": [
+            "a",
+            "old",
+            1
+          ],
+          "expect": null
+        },
+        {
+          "op": "advance",
+          "args": [
+            10000
+          ],
+          "expect": null
+        },
+        {
+          "op": "put",
+          "args": [
+            "a",
+            "fresh",
+            2
+          ],
+          "expect": null
+        },
+        {
+          "op": "get",
+          "args": [
+            "a"
+          ],
+          "expect": "fresh"
+        },
+        {
+          "op": "advance",
+          "args": [
+            2
+          ],
+          "expect": null
+        },
+        {
+          "op": "get",
+          "args": [
+            "a"
+          ],
+          "expect": null
+        }
+      ]
+    }
+  ]
+}
