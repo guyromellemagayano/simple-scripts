@@ -1,7 +1,8 @@
+#!/usr/bin/env python3
 """
 Tic Tac Toe
 
-A classic Python game of X's and O's. 
+A classic Python game of X's and O's.
 """
 
 import random
@@ -79,11 +80,7 @@ def winGame(board, letter):
 
 
 def copyBoard(board):
-    duplicateBoard = []
-
-    for x in board:
-        duplicateBoard.append(x)
-    return duplicateBoard
+    return board.copy()
 
 # Function that determines if the game board still has free blocks for any moves
 
@@ -96,7 +93,7 @@ def freeSpace(board, move):
 
 def playerMove(board):
     move = ' '
-    while move not in '1 2 3 4 5 6 7 8 9'.split() or not freeSpace(board, int(move)):
+    while move not in ['1', '2', '3', '4', '5', '6', '7', '8', '9'] or not freeSpace(board, int(move)):
         move = input('Your move (1-9): ')
     return int(move)
 
@@ -119,9 +116,9 @@ def pickRandomMoveFromList(board, movesList):
 
 def computerMove(board, compLetter):
     if compLetter == 'X':
-        playerLetter == 'O'
+        playerLetter = 'O'
     else:
-        playerLetter == 'X'
+        playerLetter = 'X'
 
     # Algorithm of AI(Artificial Intelligence) for the game
     # It's first job is to determine if the player(user) can win after the next move
@@ -173,7 +170,7 @@ while True:
             if winGame(gameBoard, playerLetter):
                 makeBoard(gameBoard)
                 print('Congratulations! You won the game!')
-                gameCommence == False
+                gameCommence = False
             else:
                 if boardFull(gameBoard):
                     makeBoard(gameBoard)
