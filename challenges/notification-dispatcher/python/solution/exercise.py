@@ -24,7 +24,7 @@ class NotificationDispatcher:
             return "idle"
         try:
             success = self._sender(delivery["payload"])
-        except Exception:
+        except Exception:  # noqa: BLE001 -- Any ordinary sender exception must trigger a retry.
             success = False
         if success:
             self._queue.ack(delivery["receipt"])

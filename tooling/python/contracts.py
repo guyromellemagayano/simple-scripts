@@ -1,5 +1,6 @@
 """Structural ports for the dispatcher; these contain no implementations."""
-from typing import Callable, Protocol, TypedDict
+from collections.abc import Callable
+from typing import Protocol, TypedDict
 
 Clock = Callable[[], int]
 Sender = Callable[[str], bool]
