@@ -1,0 +1,300 @@
+{
+  "cases": [
+    {
+      "name": "limit and reset",
+      "suite": "examples",
+      "config": {
+        "limit": 2,
+        "window_ms": 100
+      },
+      "operations": [
+        {
+          "op": "allow",
+          "args": [
+            "a"
+          ],
+          "expect": true
+        },
+        {
+          "op": "allow",
+          "args": [
+            "a"
+          ],
+          "expect": true
+        },
+        {
+          "op": "allow",
+          "args": [
+            "a"
+          ],
+          "expect": false
+        },
+        {
+          "op": "advance",
+          "args": [
+            100
+          ],
+          "expect": null
+        },
+        {
+          "op": "allow",
+          "args": [
+            "a"
+          ],
+          "expect": true
+        }
+      ]
+    },
+    {
+      "name": "rolling boundary",
+      "suite": "assessment",
+      "config": {
+        "limit": 2,
+        "window_ms": 100
+      },
+      "operations": [
+        {
+          "op": "allow",
+          "args": [
+            "a"
+          ],
+          "expect": true
+        },
+        {
+          "op": "advance",
+          "args": [
+            50
+          ],
+          "expect": null
+        },
+        {
+          "op": "allow",
+          "args": [
+            "a"
+          ],
+          "expect": true
+        },
+        {
+          "op": "advance",
+          "args": [
+            49
+          ],
+          "expect": null
+        },
+        {
+          "op": "allow",
+          "args": [
+            "a"
+          ],
+          "expect": false
+        },
+        {
+          "op": "advance",
+          "args": [
+            1
+          ],
+          "expect": null
+        },
+        {
+          "op": "allow",
+          "args": [
+            "a"
+          ],
+          "expect": true
+        },
+        {
+          "op": "allow",
+          "args": [
+            "a"
+          ],
+          "expect": false
+        },
+        {
+          "op": "advance",
+          "args": [
+            50
+          ],
+          "expect": null
+        },
+        {
+          "op": "allow",
+          "args": [
+            "a"
+          ],
+          "expect": true
+        }
+      ]
+    },
+    {
+      "name": "denials do not extend window",
+      "suite": "assessment",
+      "config": {
+        "limit": 1,
+        "window_ms": 10
+      },
+      "operations": [
+        {
+          "op": "allow",
+          "args": [
+            "a"
+          ],
+          "expect": true
+        },
+        {
+          "op": "advance",
+          "args": [
+            9
+          ],
+          "expect": null
+        },
+        {
+          "op": "allow",
+          "args": [
+            "a"
+          ],
+          "expect": false
+        },
+        {
+          "op": "allow",
+          "args": [
+            "a"
+          ],
+          "expect": false
+        },
+        {
+          "op": "advance",
+          "args": [
+            1
+          ],
+          "expect": null
+        },
+        {
+          "op": "allow",
+          "args": [
+            "a"
+          ],
+          "expect": true
+        }
+      ]
+    },
+    {
+      "name": "client isolation",
+      "suite": "assessment",
+      "config": {
+        "limit": 1,
+        "window_ms": 10
+      },
+      "operations": [
+        {
+          "op": "allow",
+          "args": [
+            "a"
+          ],
+          "expect": true
+        },
+        {
+          "op": "allow",
+          "args": [
+            "b"
+          ],
+          "expect": true
+        },
+        {
+          "op": "allow",
+          "args": [
+            "a"
+          ],
+          "expect": false
+        },
+        {
+          "op": "allow",
+          "args": [
+            ""
+          ],
+          "expect": true
+        },
+        {
+          "op": "allow",
+          "args": [
+            "__proto__"
+          ],
+          "expect": true
+        },
+        {
+          "op": "allow",
+          "args": [
+            "b"
+          ],
+          "expect": false
+        }
+      ]
+    },
+    {
+      "name": "large jump expires every timestamp",
+      "suite": "assessment",
+      "config": {
+        "limit": 3,
+        "window_ms": 10,
+        "start_ms": 1000000000
+      },
+      "operations": [
+        {
+          "op": "allow",
+          "args": [
+            "a"
+          ],
+          "expect": true
+        },
+        {
+          "op": "allow",
+          "args": [
+            "a"
+          ],
+          "expect": true
+        },
+        {
+          "op": "allow",
+          "args": [
+            "a"
+          ],
+          "expect": true
+        },
+        {
+          "op": "advance",
+          "args": [
+            10000
+          ],
+          "expect": null
+        },
+        {
+          "op": "allow",
+          "args": [
+            "a"
+          ],
+          "expect": true
+        },
+        {
+          "op": "allow",
+          "args": [
+            "a"
+          ],
+          "expect": true
+        },
+        {
+          "op": "allow",
+          "args": [
+            "a"
+          ],
+          "expect": true
+        },
+        {
+          "op": "allow",
+          "args": [
+            "a"
+          ],
+          "expect": false
+        }
+      ]
+    }
+  ]
+}
