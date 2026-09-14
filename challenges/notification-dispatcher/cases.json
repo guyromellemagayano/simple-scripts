@@ -1,0 +1,334 @@
+{
+  "cases": [
+    {
+      "name": "submit and deliver once",
+      "suite": "examples",
+      "config": {
+        "idempotency_ttl_ms": 100,
+        "max_attempts": 3
+      },
+      "operations": [
+        {
+          "op": "submit",
+          "args": [
+            "request-1",
+            "hello"
+          ],
+          "expect": "job-1"
+        },
+        {
+          "op": "submit",
+          "args": [
+            "request-1",
+            "changed"
+          ],
+          "expect": "job-1"
+        },
+        {
+          "op": "process_one",
+          "args": [],
+          "expect": "sent"
+        },
+        {
+          "op": "process_one",
+          "args": [],
+          "expect": "idle"
+        },
+        {
+          "op": "sent_messages",
+          "args": [],
+          "expect": [
+            "hello"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "dedup survives delivery",
+      "suite": "assessment",
+      "config": {
+        "idempotency_ttl_ms": 100,
+        "max_attempts": 3
+      },
+      "operations": [
+        {
+          "op": "submit",
+          "args": [
+            "k",
+            "a"
+          ],
+          "expect": "job-1"
+        },
+        {
+          "op": "process_one",
+          "args": [],
+          "expect": "sent"
+        },
+        {
+          "op": "submit",
+          "args": [
+            "k",
+            "b"
+          ],
+          "expect": "job-1"
+        },
+        {
+          "op": "process_one",
+          "args": [],
+          "expect": "idle"
+        },
+        {
+          "op": "send_attempts",
+          "args": [],
+          "expect": [
+            "a"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "duplicate does not extend TTL",
+      "suite": "assessment",
+      "config": {
+        "idempotency_ttl_ms": 10,
+        "max_attempts": 3
+      },
+      "operations": [
+        {
+          "op": "submit",
+          "args": [
+            "k",
+            "a"
+          ],
+          "expect": "job-1"
+        },
+        {
+          "op": "advance",
+          "args": [
+            9
+          ],
+          "expect": null
+        },
+        {
+          "op": "submit",
+          "args": [
+            "k",
+            "ignored"
+          ],
+          "expect": "job-1"
+        },
+        {
+          "op": "advance",
+          "args": [
+            1
+          ],
+          "expect": null
+        },
+        {
+          "op": "submit",
+          "args": [
+            "k",
+            "b"
+          ],
+          "expect": "job-2"
+        },
+        {
+          "op": "process_one",
+          "args": [],
+          "expect": "sent"
+        },
+        {
+          "op": "process_one",
+          "args": [],
+          "expect": "sent"
+        },
+        {
+          "op": "sent_messages",
+          "args": [],
+          "expect": [
+            "a",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "false and exception retry only on next call",
+      "suite": "assessment",
+      "config": {
+        "idempotency_ttl_ms": 100,
+        "max_attempts": 3,
+        "sender_outcomes": [
+          "fail",
+          "raise",
+          "ok"
+        ]
+      },
+      "operations": [
+        {
+          "op": "submit",
+          "args": [
+            "k",
+            "a"
+          ],
+          "expect": "job-1"
+        },
+        {
+          "op": "process_one",
+          "args": [],
+          "expect": "failed"
+        },
+        {
+          "op": "send_attempts",
+          "args": [],
+          "expect": [
+            "a"
+          ]
+        },
+        {
+          "op": "process_one",
+          "args": [],
+          "expect": "failed"
+        },
+        {
+          "op": "process_one",
+          "args": [],
+          "expect": "sent"
+        },
+        {
+          "op": "process_one",
+          "args": [],
+          "expect": "idle"
+        },
+        {
+          "op": "send_attempts",
+          "args": [],
+          "expect": [
+            "a",
+            "a",
+            "a"
+          ]
+        },
+        {
+          "op": "sent_messages",
+          "args": [],
+          "expect": [
+            "a"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "retry exhaustion is owned by queue",
+      "suite": "assessment",
+      "config": {
+        "idempotency_ttl_ms": 100,
+        "max_attempts": 2,
+        "sender_outcomes": [
+          "fail",
+          "raise"
+        ]
+      },
+      "operations": [
+        {
+          "op": "submit",
+          "args": [
+            "k",
+            "a"
+          ],
+          "expect": "job-1"
+        },
+        {
+          "op": "process_one",
+          "args": [],
+          "expect": "failed"
+        },
+        {
+          "op": "process_one",
+          "args": [],
+          "expect": "failed"
+        },
+        {
+          "op": "process_one",
+          "args": [],
+          "expect": "idle"
+        },
+        {
+          "op": "dead_letters",
+          "args": [],
+          "expect": [
+            {
+              "job_id": "job-1",
+              "payload": "a",
+              "attempts": 2
+            }
+          ]
+        },
+        {
+          "op": "sent_messages",
+          "args": [],
+          "expect": []
+        }
+      ]
+    },
+    {
+      "name": "independent keys, FIFO and empty message",
+      "suite": "assessment",
+      "config": {
+        "idempotency_ttl_ms": 100,
+        "max_attempts": 3,
+        "sender_outcomes": [
+          "fail",
+          "ok",
+          "ok"
+        ]
+      },
+      "operations": [
+        {
+          "op": "submit",
+          "args": [
+            "a",
+            ""
+          ],
+          "expect": "job-1"
+        },
+        {
+          "op": "submit",
+          "args": [
+            "b",
+            "B"
+          ],
+          "expect": "job-2"
+        },
+        {
+          "op": "process_one",
+          "args": [],
+          "expect": "failed"
+        },
+        {
+          "op": "process_one",
+          "args": [],
+          "expect": "sent"
+        },
+        {
+          "op": "process_one",
+          "args": [],
+          "expect": "sent"
+        },
+        {
+          "op": "sent_messages",
+          "args": [],
+          "expect": [
+            "B",
+            ""
+          ]
+        },
+        {
+          "op": "process_one",
+          "args": [],
+          "expect": "idle"
+        }
+      ]
+    }
+  ]
+}
