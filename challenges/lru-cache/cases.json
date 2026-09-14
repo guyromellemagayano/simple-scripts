@@ -1,0 +1,344 @@
+{
+  "cases": [
+    {
+      "name": "reads affect eviction",
+      "suite": "examples",
+      "config": {
+        "capacity": 2
+      },
+      "operations": [
+        {
+          "op": "put",
+          "args": [
+            "a",
+            "A"
+          ],
+          "expect": null
+        },
+        {
+          "op": "put",
+          "args": [
+            "b",
+            "B"
+          ],
+          "expect": null
+        },
+        {
+          "op": "get",
+          "args": [
+            "a"
+          ],
+          "expect": "A"
+        },
+        {
+          "op": "put",
+          "args": [
+            "c",
+            "C"
+          ],
+          "expect": null
+        },
+        {
+          "op": "get",
+          "args": [
+            "b"
+          ],
+          "expect": null
+        },
+        {
+          "op": "get",
+          "args": [
+            "c"
+          ],
+          "expect": "C"
+        }
+      ]
+    },
+    {
+      "name": "update without eviction",
+      "suite": "assessment",
+      "config": {
+        "capacity": 2
+      },
+      "operations": [
+        {
+          "op": "put",
+          "args": [
+            "a",
+            "A"
+          ],
+          "expect": null
+        },
+        {
+          "op": "put",
+          "args": [
+            "b",
+            "B"
+          ],
+          "expect": null
+        },
+        {
+          "op": "put",
+          "args": [
+            "a",
+            "new"
+          ],
+          "expect": null
+        },
+        {
+          "op": "get",
+          "args": [
+            "b"
+          ],
+          "expect": "B"
+        },
+        {
+          "op": "get",
+          "args": [
+            "a"
+          ],
+          "expect": "new"
+        },
+        {
+          "op": "put",
+          "args": [
+            "c",
+            "C"
+          ],
+          "expect": null
+        },
+        {
+          "op": "get",
+          "args": [
+            "b"
+          ],
+          "expect": null
+        }
+      ]
+    },
+    {
+      "name": "miss leaves order intact",
+      "suite": "assessment",
+      "config": {
+        "capacity": 2
+      },
+      "operations": [
+        {
+          "op": "put",
+          "args": [
+            "a",
+            "A"
+          ],
+          "expect": null
+        },
+        {
+          "op": "put",
+          "args": [
+            "b",
+            "B"
+          ],
+          "expect": null
+        },
+        {
+          "op": "get",
+          "args": [
+            "missing"
+          ],
+          "expect": null
+        },
+        {
+          "op": "put",
+          "args": [
+            "c",
+            "C"
+          ],
+          "expect": null
+        },
+        {
+          "op": "get",
+          "args": [
+            "a"
+          ],
+          "expect": null
+        },
+        {
+          "op": "get",
+          "args": [
+            "b"
+          ],
+          "expect": "B"
+        }
+      ]
+    },
+    {
+      "name": "capacity one",
+      "suite": "assessment",
+      "config": {
+        "capacity": 1
+      },
+      "operations": [
+        {
+          "op": "put",
+          "args": [
+            "a",
+            "A"
+          ],
+          "expect": null
+        },
+        {
+          "op": "put",
+          "args": [
+            "a",
+            "new"
+          ],
+          "expect": null
+        },
+        {
+          "op": "get",
+          "args": [
+            "a"
+          ],
+          "expect": "new"
+        },
+        {
+          "op": "put",
+          "args": [
+            "b",
+            "B"
+          ],
+          "expect": null
+        },
+        {
+          "op": "get",
+          "args": [
+            "a"
+          ],
+          "expect": null
+        },
+        {
+          "op": "get",
+          "args": [
+            "b"
+          ],
+          "expect": "B"
+        }
+      ]
+    },
+    {
+      "name": "empty values and special keys",
+      "suite": "assessment",
+      "config": {
+        "capacity": 2
+      },
+      "operations": [
+        {
+          "op": "put",
+          "args": [
+            "",
+            ""
+          ],
+          "expect": null
+        },
+        {
+          "op": "put",
+          "args": [
+            "__proto__",
+            "v"
+          ],
+          "expect": null
+        },
+        {
+          "op": "get",
+          "args": [
+            ""
+          ],
+          "expect": ""
+        },
+        {
+          "op": "put",
+          "args": [
+            "constructor",
+            "c"
+          ],
+          "expect": null
+        },
+        {
+          "op": "get",
+          "args": [
+            "__proto__"
+          ],
+          "expect": null
+        },
+        {
+          "op": "get",
+          "args": [
+            ""
+          ],
+          "expect": ""
+        }
+      ]
+    },
+    {
+      "name": "evicted key can return",
+      "suite": "assessment",
+      "config": {
+        "capacity": 2
+      },
+      "operations": [
+        {
+          "op": "put",
+          "args": [
+            "a",
+            "A"
+          ],
+          "expect": null
+        },
+        {
+          "op": "put",
+          "args": [
+            "b",
+            "B"
+          ],
+          "expect": null
+        },
+        {
+          "op": "put",
+          "args": [
+            "c",
+            "C"
+          ],
+          "expect": null
+        },
+        {
+          "op": "put",
+          "args": [
+            "a",
+            "again"
+          ],
+          "expect": null
+        },
+        {
+          "op": "get",
+          "args": [
+            "b"
+          ],
+          "expect": null
+        },
+        {
+          "op": "get",
+          "args": [
+            "c"
+          ],
+          "expect": "C"
+        },
+        {
+          "op": "get",
+          "args": [
+            "a"
+          ],
+          "expect": "again"
+        }
+      ]
+    }
+  ]
+}
