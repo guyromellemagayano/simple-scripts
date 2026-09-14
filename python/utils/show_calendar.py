@@ -1,13 +1,14 @@
+#!/usr/bin/env python3
 """
 Simple Calendar [v1.0]
 
 Displays a calendar with adjustable values to update the calendar of your preference
 """
 
-from datetime import datetime
 import calendar
+from datetime import UTC, datetime
 
-now = datetime.now()
+now = datetime.now(UTC).astimezone()
 # Function to show calendar
 def showCalendar(yy, mm):
     return(calendar.month(yy, mm))
