@@ -1,6 +1,7 @@
 """Implement the contract in the challenge README. Reference code is separate."""
 from tooling.python.contracts import Clock, Delivery
 
+
 class JobQueue:
 
     def __init__(self, visibility_ms: int, max_attempts: int, clock: Clock):

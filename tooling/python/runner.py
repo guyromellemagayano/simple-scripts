@@ -2,9 +2,9 @@
 import importlib.util
 import json
 import os
-from pathlib import Path
 import sys
 import unittest
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
@@ -51,7 +51,7 @@ def main():
         raise RuntimeError("Missing public class: " + class_name)
     for method in json.loads(os.environ.get("PRACTICE_METHODS", "[]")):
         if not callable(getattr(getattr(module, class_name), method, None)):
-            raise RuntimeError("Missing public method: " + method)
+            raise TypeError("Missing public method: " + method)
     if os.environ.get("PRACTICE_STRUCTURE") == "1":
         return 0
     cases = json.loads(Path(os.environ["PRACTICE_FIXTURE"]).read_text())["cases"]

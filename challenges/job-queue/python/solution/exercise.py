@@ -1,5 +1,6 @@
 """Reference: ready FIFO and expiring, single-use delivery receipts."""
 from collections import deque
+
 from tooling.python.contracts import Clock, Delivery
 
 

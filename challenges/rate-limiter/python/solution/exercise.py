@@ -1,5 +1,6 @@
 """Reference: one accepted-timestamp deque per client."""
 from collections import deque
+
 from tooling.python.contracts import Clock
 
 

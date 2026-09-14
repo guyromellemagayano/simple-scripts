@@ -1,6 +1,7 @@
 """Implement the contract in the challenge README. Reference code is separate."""
 from tooling.python.contracts import JobQueuePort, KeyValueStore, Sender
 
+
 class NotificationDispatcher:
 
     def __init__(self, store: KeyValueStore, queue: JobQueuePort, sender: Sender, idempotency_ttl_ms: int):
