@@ -1,0 +1,44 @@
+[
+  {
+    "slug": "ttl-store",
+    "title": "TTL Key-Value Store",
+    "class": "TTLStore",
+    "difficulty": "Foundation",
+    "minutes": "20\u201330"
+  },
+  {
+    "slug": "lru-cache",
+    "title": "LRU Cache",
+    "class": "LRUCache",
+    "difficulty": "Foundation \u2192 intermediate",
+    "minutes": "30\u201340"
+  },
+  {
+    "slug": "rate-limiter",
+    "title": "Sliding-Window Rate Limiter",
+    "class": "SlidingWindowLimiter",
+    "difficulty": "Intermediate",
+    "minutes": "35\u201345"
+  },
+  {
+    "slug": "url-shortener",
+    "title": "URL Shortener",
+    "class": "URLShortener",
+    "difficulty": "Intermediate",
+    "minutes": "30\u201345"
+  },
+  {
+    "slug": "job-queue",
+    "title": "Reliable In-Memory Job Queue",
+    "class": "JobQueue",
+    "difficulty": "Intermediate \u2192 advanced",
+    "minutes": "60\u201375"
+  },
+  {
+    "slug": "notification-dispatcher",
+    "title": "Idempotent Notification Dispatcher",
+    "class": "NotificationDispatcher",
+    "difficulty": "Capstone",
+    "minutes": "60\u201375"
+  }
+]

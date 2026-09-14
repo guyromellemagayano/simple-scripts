@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "noEmitOnError": true,
+    "rootDir": ".",
+    "outDir": ".cache/typescript",
+    "skipLibCheck": true,
+    "types": ["node"]
+  },
+  "include": ["challenges/**/*.ts", "tooling/typescript/**/*.ts"]
+}
