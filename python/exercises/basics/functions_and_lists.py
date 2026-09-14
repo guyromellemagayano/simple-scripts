@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Functions and list refresher practice
 
 
@@ -8,7 +9,7 @@ def list_benefits():
 
 
 def build_sentence(benefit):
-  return "%s is a benefit of functions!" % benefit
+  return f"{benefit} is a benefit of functions!"
 
 
 def name_the_benefits_of_functions():

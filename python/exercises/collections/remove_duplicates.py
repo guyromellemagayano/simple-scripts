@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 names = ["Guy Romelle Magayano", "Romelle Guy Magayano", "Thesbie Janne Magayano", "Guy Romelle Magayano"]
 names = set(names)
 names = list(names)

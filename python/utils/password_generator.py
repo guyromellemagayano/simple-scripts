@@ -2,8 +2,6 @@
 
 import secrets
 import string
-from typing import Optional
-
 
 MINIMUM_LENGTH = 8
 DEFAULT_MAXIMUM_LENGTH = 256
@@ -12,12 +10,12 @@ _RANDOM = secrets.SystemRandom()
 
 def generate_password(
     min_length: int = MINIMUM_LENGTH,
-    max_length: Optional[int] = None,
+    max_length: int | None = None,
     max_length_req: int = DEFAULT_MAXIMUM_LENGTH,
-    lower_set: Optional[str] = None,
-    upper_set: Optional[str] = None,
-    num_set: Optional[str] = None,
-    sym_set: Optional[str] = None,
+    lower_set: str | None = None,
+    upper_set: str | None = None,
+    num_set: str | None = None,
+    sym_set: str | None = None,
 ) -> str:
     """Return a password containing at least one character from each set.
 

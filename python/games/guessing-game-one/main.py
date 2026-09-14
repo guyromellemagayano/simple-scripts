@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Generate a random number between 1 and 9 (including 1 and 9). Ask the user to guess the number, then tell them whether they guessed too low, too high, or exactly right. (Hint: remember to use the user input lessons from the very first exercise)
 
@@ -8,6 +9,7 @@ Keep track of how many guesses the user has taken, and when the game ends, print
 """
 
 from random import randint
+
 
 def guessingGameOne():
 	user_prompt = 0
@@ -20,7 +22,7 @@ def guessingGameOne():
 
 		if user_prompt == "exit":
 			break
-		else: 
+		else:
 			if int(user_prompt) == guess_number:
 				print( "You got it right after", user_tries, "tries" )
 			elif int(user_prompt) > guess_number:

@@ -1,7 +1,8 @@
+#!/usr/bin/env python3
 """
 Odd Even Numbers
 
-A simple Python script that determines odd and even numbers 
+A simple Python script that determines odd and even numbers
 """
 
 # Part 1: Ask the user for the a number and print whether that number is an odd or even number
@@ -13,10 +14,10 @@ def oddEvenNumbers(num1, num2):
 	if int(num1) % 4 == 0:
 		print("The number is divisible by 4")
 
-	else: 
+	else:
 		print("\n" + "That number is odd")
 
-	# Check of num1 is divisible by num2 
+	# Check of num1 is divisible by num2
 	if int(num1) % int(num2) == 0:
 		print("Both numbers are divisible by one another" + "\n")
 	else:

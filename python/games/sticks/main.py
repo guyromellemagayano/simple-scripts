@@ -1,4 +1,6 @@
+#!/usr/bin/env python3
 import random
+
 sticks = 21
 
 print("There are 21 sticks, you can take 1-4 sticks at a time.\n Whoever will take the last stick will lose")

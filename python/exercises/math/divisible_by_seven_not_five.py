@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 l = []
 
 for i in range(2000, 3200):

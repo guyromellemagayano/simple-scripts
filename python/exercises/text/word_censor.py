@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Word Censor Script v1.0
 

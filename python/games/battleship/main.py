@@ -1,6 +1,11 @@
 from battleship import (
-    initialize_board, print_board, random_row, random_col, check_guess, mark_board,
-    MAX_TURNS
+    MAX_TURNS,
+    check_guess,
+    initialize_board,
+    mark_board,
+    print_board,
+    random_col,
+    random_row,
 )
 
 
@@ -38,7 +43,7 @@ def main():
             print("\nYou guessed that one already.")
         else:
             print("\nYou missed my battleship!\n")
-            mark_board(board, guess_row, guess_col)                
+            mark_board(board, guess_row, guess_col)
             print_board(board)
     else:
         print("\nGame Over.\n")

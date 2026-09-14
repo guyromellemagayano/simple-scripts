@@ -1,6 +1,9 @@
 """
 This module contains the functions for the math operations: addition, subtraction, multiplication, and division.
 """
+import sys
+
+
 def math_operations():
   print("\nMath Operations\n")
   print("1. Addition")
@@ -35,7 +38,7 @@ def math_operations():
       quotient = num1 / num2
       print("\nQuotient =", quotient)
   elif choice == 5:
-    exit()
+    sys.exit()
   else:
     print("\nInvalid choice")
 

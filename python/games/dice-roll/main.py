@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Dice Rolling Simulator
 
@@ -5,6 +6,7 @@ A simple Python script that simulates a dice generating a number after it was ro
 """
 
 import random
+
 
 def diceRoll():
     x = random.randrange(1, 7)
