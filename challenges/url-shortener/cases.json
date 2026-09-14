@@ -1,0 +1,627 @@
+{
+  "cases": [
+    {
+      "name": "allocate and resolve",
+      "suite": "examples",
+      "config": {},
+      "operations": [
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/a"
+          ],
+          "expect": "1"
+        },
+        {
+          "op": "resolve",
+          "args": [
+            "1"
+          ],
+          "expect": "https://example.test/a"
+        },
+        {
+          "op": "resolve",
+          "args": [
+            "missing"
+          ],
+          "expect": null
+        }
+      ]
+    },
+    {
+      "name": "duplicates do not consume IDs",
+      "suite": "assessment",
+      "config": {},
+      "operations": [
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/a"
+          ],
+          "expect": "1"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/a"
+          ],
+          "expect": "1"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/b"
+          ],
+          "expect": "2"
+        },
+        {
+          "op": "resolve",
+          "args": [
+            "2"
+          ],
+          "expect": "https://example.test/b"
+        }
+      ]
+    },
+    {
+      "name": "unknown reads do not allocate",
+      "suite": "assessment",
+      "config": {},
+      "operations": [
+        {
+          "op": "resolve",
+          "args": [
+            "1"
+          ],
+          "expect": null
+        },
+        {
+          "op": "resolve",
+          "args": [
+            ""
+          ],
+          "expect": null
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "u"
+          ],
+          "expect": "1"
+        },
+        {
+          "op": "resolve",
+          "args": [
+            "01"
+          ],
+          "expect": null
+        },
+        {
+          "op": "resolve",
+          "args": [
+            "1"
+          ],
+          "expect": "u"
+        }
+      ]
+    },
+    {
+      "name": "opaque URL identity",
+      "suite": "assessment",
+      "config": {},
+      "operations": [
+        {
+          "op": "shorten",
+          "args": [
+            "https://EXAMPLE.test"
+          ],
+          "expect": "1"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test"
+          ],
+          "expect": "2"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/"
+          ],
+          "expect": "3"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/?x=1"
+          ],
+          "expect": "4"
+        }
+      ]
+    },
+    {
+      "name": "base62 alphabet and rollover",
+      "suite": "assessment",
+      "config": {},
+      "operations": [
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/1"
+          ],
+          "expect": "1"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/2"
+          ],
+          "expect": "2"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/3"
+          ],
+          "expect": "3"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/4"
+          ],
+          "expect": "4"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/5"
+          ],
+          "expect": "5"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/6"
+          ],
+          "expect": "6"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/7"
+          ],
+          "expect": "7"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/8"
+          ],
+          "expect": "8"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/9"
+          ],
+          "expect": "9"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/10"
+          ],
+          "expect": "a"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/11"
+          ],
+          "expect": "b"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/12"
+          ],
+          "expect": "c"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/13"
+          ],
+          "expect": "d"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/14"
+          ],
+          "expect": "e"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/15"
+          ],
+          "expect": "f"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/16"
+          ],
+          "expect": "g"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/17"
+          ],
+          "expect": "h"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/18"
+          ],
+          "expect": "i"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/19"
+          ],
+          "expect": "j"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/20"
+          ],
+          "expect": "k"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/21"
+          ],
+          "expect": "l"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/22"
+          ],
+          "expect": "m"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/23"
+          ],
+          "expect": "n"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/24"
+          ],
+          "expect": "o"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/25"
+          ],
+          "expect": "p"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/26"
+          ],
+          "expect": "q"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/27"
+          ],
+          "expect": "r"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/28"
+          ],
+          "expect": "s"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/29"
+          ],
+          "expect": "t"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/30"
+          ],
+          "expect": "u"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/31"
+          ],
+          "expect": "v"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/32"
+          ],
+          "expect": "w"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/33"
+          ],
+          "expect": "x"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/34"
+          ],
+          "expect": "y"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/35"
+          ],
+          "expect": "z"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/36"
+          ],
+          "expect": "A"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/37"
+          ],
+          "expect": "B"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/38"
+          ],
+          "expect": "C"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/39"
+          ],
+          "expect": "D"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/40"
+          ],
+          "expect": "E"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/41"
+          ],
+          "expect": "F"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/42"
+          ],
+          "expect": "G"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/43"
+          ],
+          "expect": "H"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/44"
+          ],
+          "expect": "I"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/45"
+          ],
+          "expect": "J"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/46"
+          ],
+          "expect": "K"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/47"
+          ],
+          "expect": "L"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/48"
+          ],
+          "expect": "M"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/49"
+          ],
+          "expect": "N"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/50"
+          ],
+          "expect": "O"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/51"
+          ],
+          "expect": "P"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/52"
+          ],
+          "expect": "Q"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/53"
+          ],
+          "expect": "R"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/54"
+          ],
+          "expect": "S"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/55"
+          ],
+          "expect": "T"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/56"
+          ],
+          "expect": "U"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/57"
+          ],
+          "expect": "V"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/58"
+          ],
+          "expect": "W"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/59"
+          ],
+          "expect": "X"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/60"
+          ],
+          "expect": "Y"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/61"
+          ],
+          "expect": "Z"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/62"
+          ],
+          "expect": "10"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/63"
+          ],
+          "expect": "11"
+        },
+        {
+          "op": "shorten",
+          "args": [
+            "https://example.test/64"
+          ],
+          "expect": "12"
+        },
+        {
+          "op": "resolve",
+          "args": [
+            "z"
+          ],
+          "expect": "https://example.test/35"
+        },
+        {
+          "op": "resolve",
+          "args": [
+            "A"
+          ],
+          "expect": "https://example.test/36"
+        },
+        {
+          "op": "resolve",
+          "args": [
+            "Z"
+          ],
+          "expect": "https://example.test/61"
+        },
+        {
+          "op": "resolve",
+          "args": [
+            "10"
+          ],
+          "expect": "https://example.test/62"
+        }
+      ]
+    }
+  ]
+}
