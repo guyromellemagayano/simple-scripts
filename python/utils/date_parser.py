@@ -1,6 +1,7 @@
-from datetime import datetime 
+#!/usr/bin/env python3
+from datetime import UTC, datetime
 
-now		= datetime.now()
+now		= datetime.now(UTC).astimezone()
 month 	= str(now.month)
 day		= str(now.day)
 year	= str(now.year)
